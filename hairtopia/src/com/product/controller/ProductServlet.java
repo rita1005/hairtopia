@@ -136,14 +136,8 @@ public class ProductServlet extends HttpServlet {
 				Integer proNo = new Integer(req.getParameter("proNo").trim());
 				
 				Integer ptypeNo = new Integer(req.getParameter("ptypeNo").trim());
-				if (ptypeNo == null) {
-					errorMsgs.add("商品類別名稱請勿空白");
-				}
 				
 				Integer braNo = new Integer(req.getParameter("braNo").trim());
-				if (braNo == null) {
-					errorMsgs.add("品牌名稱請勿空白");
-				}
 				
 				String proName = req.getParameter("proName").trim();
 				if (proName == null || proName.trim().length() == 0) {
@@ -152,8 +146,10 @@ public class ProductServlet extends HttpServlet {
 				
 				Boolean proStatus = new Boolean(req.getParameter("proStatus").trim());
 				
-				Integer proPrice = new Integer(req.getParameter("proPrice").trim());
-				if (proPrice == null) {
+				Integer proPrice = null;
+				try {
+					proPrice = new Integer(req.getParameter("proPrice").trim());
+				} catch (NumberFormatException e) {
 					errorMsgs.add("商品單價請勿空白");
 				}
 				
@@ -242,24 +238,21 @@ public class ProductServlet extends HttpServlet {
 			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 				Integer ptypeNo = new Integer(req.getParameter("ptypeNo").trim());
-				if (ptypeNo == null) {
-					errorMsgs.add("商品類別名稱請勿空白");
-				}
 				
 				Integer braNo = new Integer(req.getParameter("braNo").trim());
-				if (braNo == null) {
-					errorMsgs.add("品牌名稱請勿空白");
-				}
 				
 				String proName = req.getParameter("proName").trim();
 				if (proName == null || proName.trim().length() == 0) {
-					errorMsgs.add("商品名稱請勿空白");
+					
+					errorMsgs.add("商品名稱請勿空白");					
 				}
 				
-				Boolean proStatus = new Boolean(req.getParameter("proStatus").trim());
+				Boolean.parseBoolean(req.getParameter("proStatus").trim());
 				
-				Integer proPrice = new Integer(req.getParameter("proPrice").trim());
-				if (proPrice == null) {
+				Integer proPrice = null;
+				try {
+					proPrice = new Integer(req.getParameter("proPrice").trim());
+				} catch (NumberFormatException e) {
 					errorMsgs.add("商品單價請勿空白");
 				}
 				
@@ -304,8 +297,7 @@ public class ProductServlet extends HttpServlet {
 				productVO.setProDesc(proDesc);
 
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-
+				if (!errorMsgs.isEmpty()) {					
 					req.setAttribute("productVO", productVO); // 含有輸入格式錯誤的productVO物件,也存入req
 
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/addProduct.jsp");
@@ -325,7 +317,7 @@ public class ProductServlet extends HttpServlet {
 				/*************************** 其他可能的錯誤處理 **********************************/
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
-
+				
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/addProduct.jsp");
 				failureView.forward(req, res);
 

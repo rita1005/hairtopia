@@ -48,7 +48,7 @@
 <table id="table-2">
 	<tr><td>
 		 <h3>此商品類別之商品 - listProducts_ByPtypeNo.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/select_page.jsp">回首頁</a></h4>
+		 <h4><a href="<%=request.getContextPath()%>/back-end/product/select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -92,7 +92,7 @@
                 </c:forEach>
             </td>
 			<td>${productVO.proName}</td>
-			<td>${productVO.proStatus}</td>
+			<td>${productVO.proStatus==false?"未上架":"已上架"}</td>
 			<td>${productVO.proPrice}</td>
 			<td>${productVO.proMpic}</td>
 			<td>${productVO.proPic}</td>			

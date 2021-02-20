@@ -49,7 +49,7 @@
 				<td>
 					<select size="1" name="ptypeNo">
 			        	<c:forEach var="ptypeVO" items="${ptypeSvc.all}" > 
-			         		<option value="${ptypeVO.ptypeNo}" ${(ProductVO.ptypeNo==ptypeVO.ptypeNo)?'selected':'' } >${ptypeVO.ptypeName}
+			         		<option value="${ptypeVO.ptypeNo}"${(productVO.ptypeNo==ptypeVO.ptypeNo)?'selected':'' }>${ptypeVO.ptypeName}
 			    		</c:forEach>   
 			    	</select>
        			</td>
@@ -60,7 +60,7 @@
 				<td>
 					<select size="1" name="braNo">
 			        	<c:forEach var="brandVO" items="${brandSvc.all}" > 
-			         		<option value="${brandVO.braNo}" ${(ProductVO.braNo==brandVO.braNo)?'selected':'' } >${brandVO.braName}
+			         		<option value="${brandVO.braNo}" ${(productVO.braNo==brandVO.braNo)?'selected':'' } >${brandVO.braName}
 			    		</c:forEach>   
 			    	</select>
        			</td>
@@ -90,8 +90,7 @@
 			</tr>
 			<tr>
 				<td>商品描述:</td>
-				<td><input type="TEXT" name="proDesc" size="45"
-					value="<%=productVO.getProDesc()%>" /></td>
+				<td><textarea name="proDesc"><%=productVO.getProDesc()%></textarea></td>
 			</tr>
 			
 

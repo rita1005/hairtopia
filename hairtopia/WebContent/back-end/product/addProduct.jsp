@@ -44,16 +44,28 @@
 	<form METHOD="POST" ACTION="<%=request.getContextPath()%>/product/product.do" name="form1" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<td>商品類別編號:</td>
-				<td><input type="TEXT" name="ptypeNo" size="45"
-					value="<%= (productVO == null) ? "" : productVO.getPtypeNo()%>" /></td>
+				<td>商品類別:</td>
+				 <jsp:useBean id="ptypeSvc" scope="page" class="com.ptype.model.PtypeService" />
+				<td>
+					<select size="1" name="ptypeNo">
+						<c:forEach var="ptypeVO" items="${ptypeSvc.all}">
+							<option value="${ptypeVO.ptypeNo}">${ptypeVO.ptypeName}
+						</c:forEach>
+					</select>
+				</td>
 					
 			</tr>
 
 			<tr>
-				<td>品牌編號</td>
-				<td><input type="TEXT" name="braNo" size="45"
-					value="<%= (productVO == null) ? "" : productVO.getBraNo()%>" /></td>
+				<td>品牌名稱</td>
+				<jsp:useBean id="brandSvc" scope="page" class="com.brand.model.BrandService" />
+				<td>
+					<select size="1" name="braNo">
+						<c:forEach var="brandVO" items="${brandSvc.all}">
+							<option value="${brandVO.braNo}">${brandVO.braName}
+						</c:forEach>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>商品名稱</td>
@@ -80,8 +92,7 @@
 			</tr>
 			<tr>
 				<td>商品描述</td>
-				<td><input type="TEXT" name="proDesc" size="45"
-					value="<%= (productVO == null) ? "" : productVO.getProDesc()%>" /></td>
+				<td><textarea name="proDesc"><%= (productVO == null) ? "" : productVO.getProDesc()%></textarea></td>					
 			</tr>
 		</table>
 	

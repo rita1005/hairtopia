@@ -83,7 +83,7 @@ img {
                 </c:forEach>
 			</td>
 			<td>${productVO.proName}</td>			
-			<td>${productVO.proStatus}</td>
+			<td>${productVO.proStatus==false?"未上架":"已上架"}</td>
 			<td>${productVO.proPrice}</td>
 			<td>${productVO.proMpic}</td>
 			<td>${productVO.proPic}</td>
