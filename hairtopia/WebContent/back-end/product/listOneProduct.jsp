@@ -37,10 +37,11 @@
 		
 		<td>${productVO.proNo}</td>
 		<jsp:useBean id="ptypeSvc" scope="page" class="com.ptype.model.PtypeService" />
-		<td>${(ptypeSvc.onePtype.(productVO.ptypeNo)).ptypeName}</td>
-		<td>${productVO.braNo}</td>
+		<td>${ptypeSvc.getOnePtype(productVO.ptypeNo).ptypeName}</td>
+		<jsp:useBean id="brandSvc" scope="page" class="com.brand.model.BrandService" />
+		<td>${brandSvc.getOneBrand(productVO.braNo).braName}</td>
 		<td>${productVO.proName}</td>
-		<td>${productVO.proStatus}</td>
+		<td>${productVO.proStatus==false?"未上架":"已上架"}</td>
 		<td>${productVO.proPrice}</td>
 		<td>${productVO.proMpic}</td>
 		<td>${productVO.proPic}</td>
