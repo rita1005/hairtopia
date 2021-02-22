@@ -74,8 +74,10 @@
 			</tr>
 			<tr>
 				<td>上架狀態</td>
-				<td><input type="TEXT" name="braIntro" size="45"
-					value="<%= (productVO == null) ? "" : productVO.isProStatus()%>" /></td>
+				<td>
+					<label><input type="radio" name="proStatus" value="${prodouctVO.proStatus}" checked/>上架</label>					
+					<label><input type="radio" name="proStatus" value="${productVO.proStatus}" />下架</label>				
+				</td>
 			</tr>
 			<tr>
 				<td>商品單價</td>

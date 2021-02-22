@@ -29,20 +29,9 @@
 		<th>品牌介紹</th>
 	</tr>
 	<tr>
-		<%
-				byte[] braLogo = brandVO.getBraLogo();
-				Base64.Encoder encoder = Base64.getEncoder();
-				String src = "data:image/jpeg;base64,";
-				if (braLogo != null){
-					src += encoder.encodeToString(braLogo); 
-				}else{
-					src="images/unupload.jpg";
-				}
-					
-				pageContext.setAttribute("src", src);%>
 		<td>${brandVO.braNo}</td>
 		<td>${brandVO.braName}</td>
-		<td><img src="${src}" alt='沒有圖片' /></td>
+		<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=brand&column=braLogo&idname=braNo&id=${brandVO.braNo}" alt='沒有圖片' /></td>
 		<td>${brandVO.braIntro}</td>
 	</tr>
 

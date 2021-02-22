@@ -59,22 +59,13 @@ img {
 		</tr>
 		<%
 			for (BrandVO brandVO : list) {
-				byte[] braLogo = brandVO.getBraLogo();
-				Base64.Encoder encoder = Base64.getEncoder();
-				String src = "data:image/jpeg;base64,";
-				if (braLogo != null){
-					src += encoder.encodeToString(braLogo);
-					
-					
-				}else{
-					src="images/unupload.jpg";
-				}
+				
 		%>
 
 		<tr>
 			<td><%=brandVO.getBraNo()%></td>
 			<td><%=brandVO.getBraName()%></td>
-			<td><img src="<%=src%>" alt='沒有圖片' /></td>
+			<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=brand&column=braLogo&idname=braNo&id=<%=brandVO.getBraNo()%>" alt='沒有圖片' /></td>
 			<td><%=brandVO.getBraIntro()%></td>
 			<td>
 				<FORM METHOD="post"

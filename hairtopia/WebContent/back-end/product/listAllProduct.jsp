@@ -83,10 +83,10 @@ img {
                 </c:forEach>
 			</td>
 			<td>${productVO.proName}</td>			
-			<td>${productVO.proStatus==false?"未上架":"已上架"}</td>
+			<td>${productVO.proStatus==true?"上架":"下架"}</td>
 			<td>${productVO.proPrice}</td>
-			<td>${productVO.proMpic}</td>
-			<td>${productVO.proPic}</td>
+			<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片' /></td>
+			<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片' /></td>
 			<td>${productVO.proDesc}</td>
 			
 			

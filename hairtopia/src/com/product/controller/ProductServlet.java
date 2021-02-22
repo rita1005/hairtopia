@@ -143,8 +143,8 @@ public class ProductServlet extends HttpServlet {
 				if (proName == null || proName.trim().length() == 0) {
 					errorMsgs.add("商品名稱請勿空白");
 				}
-				
-				Boolean proStatus = new Boolean(req.getParameter("proStatus").trim());
+							
+				Boolean proStatus = Boolean.parseBoolean(req.getParameter("proStatus").trim());
 				
 				Integer proPrice = null;
 				try {
@@ -212,7 +212,6 @@ public class ProductServlet extends HttpServlet {
 				/*************************** 2.開始修改資料 *****************************************/
 				
 				productVO = productSvc.updateProduct(proNo, ptypeNo, braNo, proName, proStatus, proPrice, proMpic, proPic, proDesc);
-				System.out.println(productVO.getProNo());
 
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("productVO", productVO); // 資料庫update成功後,正確的的productVO物件,存入req
@@ -247,7 +246,7 @@ public class ProductServlet extends HttpServlet {
 					errorMsgs.add("商品名稱請勿空白");					
 				}
 				
-				Boolean.parseBoolean(req.getParameter("proStatus").trim());
+				Boolean proStatus = Boolean.parseBoolean(req.getParameter("proStatus").trim());
 				
 				Integer proPrice = null;
 				try {

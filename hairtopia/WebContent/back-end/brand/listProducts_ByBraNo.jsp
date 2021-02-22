@@ -86,7 +86,7 @@
 			</td>
 			<td>
 				<c:forEach var="brandVO" items="${brandSvc.all}">
-                    <c:if test="${productVO.braNo==BrandVO.braNo}">
+                    <c:if test="${productVO.braNo==brandVO.braNo}">
 	                    ${brandVO.braNo}【<font color=orange>${brandVO.braName}</font>】
                     </c:if>
                 </c:forEach>

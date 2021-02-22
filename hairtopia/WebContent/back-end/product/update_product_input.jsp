@@ -72,8 +72,10 @@
 			</tr>
 			<tr>
 				<td>上架狀態:</td>
-				<td><input type="TEXT" name="proStatus" size="45"
-					value="<%=productVO.isProStatus()%>" /></td>
+				<td>
+					<label><input type="radio" name="proStatus" value="true"  ${productVO.proStatus==true?'checked':''}/>上架</label>					
+					<label><input type="radio" name="proStatus" value="false" ${!productVO.proStatus==true?'checked':''}/>下架</label>					
+				</td>
 			</tr>
 			<tr>
 				<td>商品單價:</td>

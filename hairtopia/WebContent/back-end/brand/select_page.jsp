@@ -8,7 +8,7 @@
 </head>
 <body>
 <table>
-	<tr><td><h3><img src="images/HairtopiaLogo1.png" width="80" height="80">Hairtopia Brand: Home</h3></td></tr>
+	<tr><td><h3>Hairtopia Brand: Home</h3></td></tr>
 </table>
 	
 <%-- 錯誤列表 --%>
