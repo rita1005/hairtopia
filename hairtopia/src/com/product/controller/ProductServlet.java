@@ -2,8 +2,10 @@ package com.product.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -350,7 +352,38 @@ public class ProductServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if ("listProducts_ByCompositeQuery".equals(action)) { // 來自select_page.jsp的請求
 
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				
+				/***************************1.將輸入資料轉為Map**********************************/ 
+				//採用Map<String,String[]> getParameterMap()的方法 
+				//注意:an immutable java.util.Map 
+				Map<String, String[]> map = req.getParameterMap();
+				
+				/***************************2.開始複合查詢***************************************/
+				ProductService productSvc = new ProductService();
+				List<ProductVO> list  = productSvc.getAll(map);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("listProducts_ByCompositeQuery", list); // 資料庫取出的list物件,存入request
+				RequestDispatcher successView = req.getRequestDispatcher("/product/listProducts_ByCompositeQuery.jsp"); // 成功轉交listProducts_ByCompositeQuery.jsp
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 
 }

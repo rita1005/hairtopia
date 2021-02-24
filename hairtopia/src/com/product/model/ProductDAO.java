@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -218,6 +221,83 @@ public class ProductDAO implements ProductDAO_interface{
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				productVO = new ProductVO();
+				productVO.setProNo(rs.getInt("proNo"));
+				productVO.setPtypeNo(rs.getInt("ptypeNo"));
+				productVO.setBraNo(rs.getInt("braNo"));
+				productVO.setProName(rs.getString("proName"));
+				productVO.setProStatus(rs.getBoolean("proStatus"));
+				productVO.setProPrice(rs.getInt("proPrice"));
+				productVO.setProMpic(rs.getBytes("proMpic"));
+				productVO.setProPic(rs.getBytes("proPic"));
+				productVO.setProDesc(rs.getString("proDesc"));
+				list.add(productVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured." + se.getMessage());
+		}finally{
+			if(rs != null) {
+				try {
+					rs.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProductVO> getAll(Map<String, String[]> map) {
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		ProductVO productVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();			
+			String SQL = "select proNo,pr.ptypeNo,b.braNo,proName,proStatus,proPrice,proMpic,proPic,proDesc from product pr " 										
+				    	+"join ptype pt on product.ptypeNo = pt.ptypeNo "
+				    	+"join brand b on pr.braNo = b.braNo ";
+			Set<String> keys = map.keySet();
+			int count = 0;
+			for(String key : keys) {
+				String value = map.get(keys)[count];
+				if (value != null) {
+					if(count==0) {
+						SQL += "where ";
+					}else {
+						SQL +="and ";
+					}
+					if(key.equals("search")){
+						SQL +=  "concat(proNo,ptypeName,braName,proName,proPrice,proDesc) like "+ "'%"+value+"%' ";								
+					}else {
+						SQL += (key + "=" + value + " "); 
+					}
+					
+				}
+			}			
+			SQL += " order by proNo;";
+			
+			pstmt = con.prepareStatement(SQL);			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

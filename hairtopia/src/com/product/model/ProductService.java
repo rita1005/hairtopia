@@ -1,6 +1,7 @@
 package com.product.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProductService {
 private ProductDAO_interface dao;
@@ -62,5 +63,8 @@ private ProductDAO_interface dao;
 	
 	public List<ProductVO> getAll(){
 		return dao.getAll();
+	}
+	public List<ProductVO> getAll(Map<String, String[]> map){
+		return dao.getAll(map);
 	}
 }

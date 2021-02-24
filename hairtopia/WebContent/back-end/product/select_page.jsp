@@ -104,30 +104,30 @@
 <h3>複合查詢</h3>
 <ul>	
 	<form METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do" >
-		<li><b>輸入商品編號:</b><input type="text" name="compositeQuery"></li>
+		<li><b>搜尋:</b><input type="text" name="search"></li>
 		<li><b>選擇商品編號:</b>
-	       <select size="1" name="compositeQuery" >
+	       <select size="1" name="braNO" >
 	         <c:forEach var="productVO" items="${dao.all}" > 
 	          <option value="${productVO.proNo}">${productVO.proNo}
 	         </c:forEach>   
 	       </select>
         </li>
      	<li><b><font color=orange>選擇商品類別:</font></b>
-	       <select size="1" name="compositeQuery" >
+	       <select size="1" name="ptypeNo" >
 	         <c:forEach var="ptypeVO" items="${ptypeSvc.all}" > 
 	          <option value="${ptypeVO.ptypeNo}">${ptypeVO.ptypeName}
 	         </c:forEach>   
 	       </select>
         </li>
         <li><b><font color=orange>選擇品牌名稱:</font></b>
-	       <select size="1" name="compositeQuery">
+	       <select size="1" name="braNo">
 	         <c:forEach var="brandVO" items="${brandSvc.all}" > 
 	          <option value="${brandVO.braNo}">${brandVO.braName}
 	         </c:forEach>   
 	       </select>
         </li>
         <li><b>選擇商品名稱:</b>
-	       <select size="1" name="compositeQuery">
+	       <select size="1" name="proNo">
 	         <c:forEach var="productVO" items="${dao.all}" > 
 	          <option value="${productVO.proNo}">${productVO.proName}
 	         </c:forEach>   
