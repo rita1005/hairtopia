@@ -3,32 +3,30 @@
 <%@ page import="com.ordermaster.model.*"%>
 
 <%
-	OrderMasterVO ordmVO = (OrderMasterVO) request.getAttribute("ordmVO");
+	OrderMasterVO ordermasterVO = (OrderMasterVO) request.getAttribute("ordermasterVO");
 %>
 
 
 <html>
 <head>
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>訂單主檔資料新增 - addOrderMaster.jsp</title>
-
+<meta charset="UTF-8">
+<title>訂單主檔資料修改 - update_ordermaster_input.jsp</title>
 </head>
 <body bgcolor='white'>
-
 	<table id="table-1">
 		<tr>
 			<td>
-				<h3>訂單主檔資料新增 - addOrderMaster.jsp</h3>
-			</td>
-			<td>
+				<h3>訂單主檔資料修改 - update_ordermaster_input.jsp</h3>
 				<h4>
 					<a href="<%=request.getContextPath()%>/back-end/ordermaster/select_page.jsp">回首頁</a>
 				</h4>
 			</td>
 		</tr>
 	</table>
-	<h3>資料新增:</h3>
+
+	<h3>資料修改:</h3>
+
+
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
 		<font style="color: red">請修正以下錯誤:</font>
@@ -39,38 +37,39 @@
 		</ul>
 	</c:if>
 
-	
-
 	<form METHOD="POST" ACTION="<%=request.getContextPath()%>/ordermaster/ordermaster.do" name="form1" enctype="multipart/form-data">
 		<table>
 			<tr>
+				<td>訂單編號:<font color=red><b>*</b></font></td>
+				<td><%=ordermasterVO.getOrdNo()%></td>
+			</tr>
+			<tr>
 				<td>會員編號:</td>
-				<td><input type="TEXT" name="memNi" size="45"
-					value="<%= (ordmVO == null) ? "" : ordmVO.getMemNo()%>" /></td>
-					
+				<td><input type="TEXT" name="memNo" size="45"
+					value="<%=ordermasterVO.getMemNo()%>" /></td>
+			</tr>
+			<tr>
+				<td>訂單狀態:</td>
+				<td><input type="TEXT" name="ordStatus" size="45"
+					value="<%=ordermasterVO.getOrdStatus()%>" /></td>
+			</tr>
+			<tr>
+				<td>總金額:</td>
+				<td><input type="TEXT" name="ordAmt" size="45"
+					value="<%=ordermasterVO.getOrdAmt()%>" /></td>
 			</tr>
 
-			<tr>
-				<td>訂單狀態</td>
-				<td><input type="TEXT" name="ordStatus" size="45"
-					value="<%= (ordmVO == null) ? "" : ordmVO.getOrdStatus()%>" /></td>
-			</tr>
-			
-			<tr>
-				<td>總金額</td>
-				<td><input type="TEXT" name="ordAmt" size="45"
-					value="<%= (ordmVO == null) ? "" : ordmVO.getOrdAmt()%>" /></td>
-			</tr>
 
 
 		</table>
 	
 	
-		<br> 
-		<input name="action" value="insert" type="hidden" >
-		<input type="submit" value="新增">
+	<br> <input type="hidden" name="action" value="update"> 
+		 <input type="hidden" name="ordNo" value="<%=ordermasterVO.getOrdNo()%>">
+		 <input type="submit" value="送出修改">
 		
 	</form>
+
 
 </body>
 </html>

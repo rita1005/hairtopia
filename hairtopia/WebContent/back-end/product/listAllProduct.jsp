@@ -69,7 +69,7 @@ img {
 		<tr>
 			<td>${productVO.proNo}</td>
 			<td>
-				<c:forEach var="ptypeVO" items="${ptypeSvc.getAll() }">
+				<c:forEach var="ptypeVO" items="${ptypeSvc.all}">
                     <c:if test="${productVO.ptypeNo==ptypeVO.ptypeNo}">
 	                    ${ptypeVO.ptypeNo}【${ptypeVO.ptypeName}】
                     </c:if>

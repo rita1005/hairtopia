@@ -26,48 +26,38 @@
   <br>
   
   <li>
-    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do" >
-        <b>輸入品牌編號:</b>
-        <input type="text" name="braNo">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">                   <h4>(資料格式驗證  by Controller ).</h4> 
-    </FORM>
-  </li>
-
-
-  <jsp:useBean id="dao" scope="page" class="com.orderdetail.model.OrderDetailService" />
-   
-  <li>
-     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do" >
-       <b>選擇訂單編號:</b>
-       <select size="1" name="ordNo">
-         <c:forEach var="orddVO" items="${dao.all}" > 
-          <option value="${orddVO.ordNo}">${orddVO.ordNo}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-     </FORM>
-  </li>  
-  <li>
-  	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do" >
-       <b>選擇商品編號:</b>
-       <select size="1" name="proNo">
-         <c:forEach var="orddVO" items="${dao.all}" > 
-          <option value="${orddVO.proNo}">${orddVO.proNo}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-     </FORM>
-  </li>
+<h3>複合查詢</h3>	
+	<form METHOD="post" ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do" >
+		
+		<li><b>搜尋:</b><input type="text" name="search"></li>
+		
+		
+		<jsp:useBean id="ordermasterSvc" scope="page" class="com.ordermaster.model.OrderMasterService" />
+		<li><b>選擇訂單編號:</b>
+	       <select size="1" name="ordNO" >
+	         <option>
+	         <c:forEach var="ordermasterVO" items="${ordermasterSvc.all}" > 
+	          <option value="${ordermasterVO.ordNo}">${ordermasterVO.ordNo}
+	         </c:forEach>   
+	       </select>
+        </li>
+        
+        <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
+     	<li><b><font color=orange>選擇商品名稱:</font></b>
+	       <select size="1" name="proNo" >
+	         <option>
+	         <c:forEach var="productVO" items="${productSvc.all}" > 
+	          <option value="${productVO.proNo}">${productVO.proName}
+	         </c:forEach>   
+	       </select>
+        </li>
+		
+		<input type="hidden" name="action" value="listOrderDetails_ByCompositeQuery">
+    	<input type="submit" value="送出">
+	</form>
 </ul>
 
-	<h3>品牌管理</h3>
 
-	<ul>
-		<li><a href='addOrderDetail.jsp'>Add</a> a new OrderDetail.</li>
-	</ul>
 
 
 	

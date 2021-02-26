@@ -52,28 +52,26 @@ img {
 	<table>
 		<tr>
 			<th>訂單編號</th>
-			<th>商品編號</th>
+			<th>商品名稱</th>
 			<th>訂購數量</th>
 			<th>明細金額</th>
 
 		</tr>
-		<%
-			for (OrderDetailVO orderdetailVO : list) {
-				
-		%>
-
+		
+	<c:forEach var="orderdetailVO" items="${list}">
 		<tr>
-			<td><%=orderdetailVO.getOrdNo()%></td>
-			<td><%=orderdetailVO.getProNo()%></td>			
-			<td><%=orderdetailVO.getOrdDetAmt()%></td>
-			<td><%=orderdetailVO.getOrdDetPrice()%></td>
+			<td>${orderdetailVO.ordNo}</td>			
+			<jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
+			<td>${productSvc.getOneProduct(orderdetailVO.proNo).proName}</td>			
+			<td>${orderdetailVO.ordDetAmt}</td>
+			<td>${orderdetailVO.ordDetPrice}</td>
 			<td>
 				<FORM METHOD="post"
 					ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do"
 					style="margin-bottom: 0px;">
 					<input type="submit" value="修改"> 
-					<input type="hidden" name="ordNo" value="<%=orderdetailVO.getOrdNo()%>">
-					<input type="hidden" name="proNo" value="<%=orderdetailVO.getProNo()%>">  
+					<input type="hidden" name="ordNo" value="${orderdetailVO.ordNo}>">
+					<input type="hidden" name="proNo" value="${orderdetailVO.proNo}>">  
 					<input type="hidden" name="action" value="getOne_For_Update">
 				</FORM>
 			</td>
@@ -82,15 +80,13 @@ img {
 					ACTION="<%=request.getContextPath()%>/orderdetail/orderdetail.do"
 					style="margin-bottom: 0px;">
 					<input type="submit" value="刪除"> 
-					<input type="hidden" name="ordNo" value="<%=orderdetailVO.getOrdNo()%>">
-					<input type="hidden" name="proNo" value="<%=orderdetailVO.getProNo()%>"> 
+					<input type="hidden" name="ordNo" value="${orderdetailVO.ordNo}>">
+					<input type="hidden" name="proNo" value="${orderdetailVO.proNo}>"> 
 					<input type="hidden" name="action" value="delete">
 				</FORM>
 			</td>
 		</tr>
-		<%
-			}
-		%>
+	</c:forEach>
 
 
 	</table>

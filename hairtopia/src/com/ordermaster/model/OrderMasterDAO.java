@@ -1,16 +1,28 @@
 package com.ordermaster.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.orderdetail.model.OrderDetailDAO;
+import com.orderdetail.model.OrderDetailJDBCDAO;
+import com.orderdetail.model.OrderDetailVO;
+
+
 
 
 public class OrderMasterDAO implements OrderMasterDAO_interface{
@@ -31,9 +43,9 @@ public class OrderMasterDAO implements OrderMasterDAO_interface{
 	private static final String DELETE = 
 			"DELETE FROM OrderMaster where ordNo = ?";
 	private static final String GET_ONE_STMT = 
-			"SELECT ordNo,memNo,ordStatus,ordAmt FROM OrderMaster where ordNo = ?";
+			"SELECT ordNo,memNo,ordDate,ordStatus,ordAmt FROM OrderMaster where ordNo = ?";
 	private static final String GET_ALL_STMT = 
-			"SELECT ordNo,memNo,ordStatus,ordAmt FROM OrderMaster order by ordNo";
+			"SELECT ordNo,memNo,ordDate,ordStatus,ordAmt FROM OrderMaster order by ordNo";
 	@Override
 	public void insert(OrderMasterVO ordmVO) {
 		Connection con = null;
@@ -45,7 +57,7 @@ public class OrderMasterDAO implements OrderMasterDAO_interface{
 			
 			pstmt.setInt(1, ordmVO.getMemNo());
 			pstmt.setInt(2, ordmVO.getOrdStatus());
-			pstmt.setInt(3, ordmVO.getOrdAmt());
+			pstmt.setInt(2, ordmVO.getOrdAmt());
 			
 			pstmt.executeUpdate();
 			
@@ -160,6 +172,7 @@ public class OrderMasterDAO implements OrderMasterDAO_interface{
 				ordmVO = new OrderMasterVO();
 				ordmVO.setOrdNo(rs.getInt("ordNo"));
 				ordmVO.setMemNo(rs.getInt("memNo"));
+				ordmVO.setOrdDate(rs.getTimestamp("ordDate"));
 				ordmVO.setOrdStatus(rs.getInt("ordStatus"));
 				ordmVO.setOrdAmt(rs.getInt("ordAmt"));
 			}
@@ -208,6 +221,7 @@ public class OrderMasterDAO implements OrderMasterDAO_interface{
 				ordmVO = new OrderMasterVO();
 				ordmVO.setOrdNo(rs.getInt("ordNo"));
 				ordmVO.setMemNo(rs.getInt("memNo"));
+				ordmVO.setOrdDate(rs.getTimestamp("ordDate"));
 				ordmVO.setOrdStatus(rs.getInt("ordStatus"));
 				ordmVO.setOrdAmt(rs.getInt("ordAmt"));
 				list.add(ordmVO);
@@ -238,6 +252,164 @@ public class OrderMasterDAO implements OrderMasterDAO_interface{
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public List<OrderMasterVO> getAll(Map<String, String[]> map) {
+		List<OrderMasterVO> list = new ArrayList<OrderMasterVO>();
+		OrderMasterVO ordermasterVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();			
+			String SQL = "select om.ordNo, om.memNo, ordDate, ordStatus, ordAmt from ordermaster om " 										
+				    	+"join member m on om.memNo = m.memNo ";
+			Set<String> keys = map.keySet();
+			int count = 0;
+			for(String key : keys) {
+				String value = map.get(key)[0];
+				System.out.println(value);
+				if (!"".equals(value) && !"action".equals(key)) {
+					if(count==0) {
+						SQL += "where ";
+						count++;
+					}else {
+						SQL +="and ";
+					}
+					if(key.equals("search")){
+						SQL +=  "concat(om.ordNo,om.memNo,memName,ordStatus,ordAmt) like "+ "'%"+value+"%' ";								
+					}else {
+						SQL += ("om." + key + "=" + value + " ");
+					}					
+				}
+				
+			}			
+			SQL += "order by ordNo;";
+			System.out.println(SQL);
+			pstmt = con.prepareStatement(SQL);			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ordermasterVO = new OrderMasterVO();
+				ordermasterVO.setOrdNo(rs.getInt("ordNo"));
+				ordermasterVO.setMemNo(rs.getInt("memNo"));
+				ordermasterVO.setOrdDate(rs.getTimestamp("ordDate"));
+				ordermasterVO.setOrdStatus(rs.getInt("ordStatus"));
+				ordermasterVO.setOrdAmt(rs.getInt("ordAmt"));
+				list.add(ordermasterVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured." + se.getMessage());
+		}finally{
+			if(rs != null) {
+				try {
+					rs.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public OrderMasterVO insertWithOrderDetails(OrderMasterVO ordermasterVO, Vector<OrderDetailVO> vector) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			
+			// 1●設定於 pstm.executeUpdate()之前
+    		con.setAutoCommit(false);
+			
+    		// 先新增訂單
+			String cols[] = {"ordNo"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);			
+			pstmt.setInt(1, ordermasterVO.getMemNo());
+			pstmt.setInt(2, 0);
+			pstmt.setInt(3, ordermasterVO.getOrdAmt());
+			
+			pstmt.executeUpdate();
+			//掘取對應的自增主鍵值
+			String next_ordNo = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_ordNo = rs.getString(1);
+				System.out.println("自增主鍵值= " + next_ordNo +"(剛新增成功的訂單編號)");
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			
+			rs.close();
+			// 再同時新增訂單明細
+			OrderDetailDAO dao = new OrderDetailDAO();
+			
+			for(int i = 0; i < vector.size(); i++) {
+				OrderDetailVO orderdetailVO = vector.get(i);
+				orderdetailVO.setOrdNo(new Integer(next_ordNo)) ;
+				dao.insert2(orderdetailVO,con);
+			}
+
+			// 2●設定於 pstm.executeUpdate()之後
+			con.commit();
+			con.setAutoCommit(true);
+			System.out.println("list.size()-B="+vector.size());
+			System.out.println("新增訂單編號" + next_ordNo + "時,共有訂單明細" + vector.size()
+					+ "筆同時被新增");
+			
+			OrderMasterService ordermasterSvc = new OrderMasterService();
+			ordermasterVO = ordermasterSvc.getOneOrderMaster(new Integer(next_ordNo));
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-ordermaster");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return ordermasterVO;
 	}
 
 }

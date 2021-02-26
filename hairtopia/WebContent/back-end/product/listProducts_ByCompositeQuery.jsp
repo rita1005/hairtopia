@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.product.model.*"%>
 
+
 <%-- 萬用複合查詢-可由客戶端select_page.jsp隨意增減任何想查詢的欄位 --%>
 <%-- 此頁只作為複合查詢時之結果練習，可視需要再增加分頁、送出修改、刪除之功能--%>
 
@@ -24,7 +25,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>所有商品資料 - listAllProduct.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/select_page.jsp">>回首頁</a></h4>
+		 <h4><a href="<%=request.getContextPath()%>/back-end/product/select_page.jsp">>回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -41,7 +42,7 @@
 		<th>商品副圖</th>
 		<th>商品描述</th>
 	</tr>
-	<c:forEach var="productVO" items="${list}">
+	<c:forEach var="productVO" items="${listProducts_ByCompositeQuery}">
 		<tr>
 			<td>${productVO.proNo}</td>
 			<td>

@@ -6,12 +6,9 @@
 
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
-<%
-	OrderMasterService ordmSvc = new OrderMasterService();
-	List<OrderMasterVO> list = ordmSvc.getAll();
-	pageContext.setAttribute("list", list);
-%>
 
+<jsp:useBean id="ordermasterSvc" scope="page" class="com.ordermaster.model.OrderMasterService" />
+<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemService" />
 
 
 <!DOCTYPE html>
@@ -57,21 +54,29 @@ img {
 			<th>總金額</th>
 
 		</tr>
-		<%
-			for (OrderMasterVO ordmVO : list) {
-				
-		%>
+		<c:forEach var="ordermasterVO" items="${ordermasterSvc.all}">
 		<tr>
-			<td><%=ordmVO.getOrdNo()%></td>
-			<td><%=ordmVO.getMemNo()%></td>
-			<td><%=ordmVO.getOrdStatus()%></td>
-			<td><%=ordmVO.getOrdAmt()%></td>
+			<td>${ordermasterVO.ordNo}</td>
+			<td>
+				<c:forEach var="memVO" items="${memSvc.all}">
+                    <c:if test="${ordermasterVO.memNo==memVO.memNo}">
+	                    ${memVO.memNo}【${memVO.memName}】
+                    </c:if>
+                </c:forEach>
+            </td>
+			<td><c:if test="${ordermasterVO.ordStatus==0}">未出貨</c:if>
+				<c:if test="${ordermasterVO.ordStatus==1}">已出貨</c:if>
+				<c:if test="${ordermasterVO.ordStatus==2}">已結案</c:if>
+				<c:if test="${ordermasterVO.ordStatus==3}">訂單取消</c:if>
+				<c:if test="${ordermasterVO.ordStatus==9}">退貨</c:if>
+			</td>
+			<td>${ordermasterVO.ordAmt}</td>
 			<td>
 				<FORM METHOD="post"
 					ACTION="<%=request.getContextPath()%>/ordermaster/ordermaster.do"
 					style="margin-bottom: 0px;">
 					<input type="submit" value="修改"> <input type="hidden"
-						name="ordNo" value="<%=ordmVO.getOrdNo()%>"> <input
+						name="ordNo" value="${ordermasterVO.ordNo}"> <input
 						type="hidden" name="action" value="getOne_For_Update">
 				</FORM>
 			</td>
@@ -80,14 +85,12 @@ img {
 					ACTION="<%=request.getContextPath()%>/ordermaster/ordermaster.do"
 					style="margin-bottom: 0px;">
 					<input type="submit" value="刪除"> <input type="hidden"
-						name="ordNo" value="<%=ordmVO.getOrdNo()%>"> <input
+						name="ordNo" value="${ordermasterVO.ordNo}"> <input
 						type="hidden" name="action" value="delete">
 				</FORM>
 			</td>
 		</tr>
-		<%
-			}
-		%>
+	</c:forEach>
 
 
 	</table>

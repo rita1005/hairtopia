@@ -1,6 +1,9 @@
 package com.orderdetail.model;
 
 import java.util.List;
+import java.util.Map;
+
+import com.product.model.ProductVO;
 
 
 public class OrderDetailService {
@@ -11,37 +14,37 @@ private OrderDetailDAO_interface dao;
 	}
 	
 	public OrderDetailVO addOrderDetail(Integer ordNo, Integer proNo, Integer ordDetAmt, Integer ordDetPrice) {
-		OrderDetailVO orddVO = new OrderDetailVO();
+		OrderDetailVO orderdetailVO = new OrderDetailVO();
 		
-		orddVO.setOrdNo(ordNo);
-		orddVO.setProNo(proNo);
-		orddVO.setOrdDetAmt(ordDetAmt);
-		orddVO.setOrdDetPrice(ordDetPrice);		
-		dao.insert(orddVO);
+		orderdetailVO.setOrdNo(ordNo);
+		orderdetailVO.setProNo(proNo);
+		orderdetailVO.setOrdDetAmt(ordDetAmt);
+		orderdetailVO.setOrdDetPrice(ordDetPrice);		
+		dao.insert(orderdetailVO);
 		
-		return orddVO;
+		return orderdetailVO;
 	}
 	
 	//預留給Struts2用
-	public void addOrderDetail(OrderDetailVO orddVO) {
-		dao.insert(orddVO);
+	public void addOrderDetail(OrderDetailVO orderdetailVO) {
+		dao.insert(orderdetailVO);
 	}
 	
 	public OrderDetailVO updateOrderDetail(Integer ordNo, Integer proNo, Integer ordDetAmt, Integer ordDetPrice) {
-		OrderDetailVO orddVO = new OrderDetailVO();
+		OrderDetailVO orderdetailVO = new OrderDetailVO();
 		
-		orddVO.setOrdNo(ordNo);
-		orddVO.setProNo(proNo);
-		orddVO.setOrdDetAmt(ordDetAmt);
-		orddVO.setOrdDetPrice(ordDetPrice);
-		dao.update(orddVO);
+		orderdetailVO.setOrdNo(ordNo);
+		orderdetailVO.setProNo(proNo);
+		orderdetailVO.setOrdDetAmt(ordDetAmt);
+		orderdetailVO.setOrdDetPrice(ordDetPrice);
+		dao.update(orderdetailVO);
 		
 		return dao.findByPrimaryKey(ordNo, proNo);
 	}
 	
 	//預留給Struts2用
-	public void updateOrderDetail(OrderDetailVO orddVO) {
-		dao.update(orddVO);
+	public void updateOrderDetail(OrderDetailVO orderdetailVO) {
+		dao.update(orderdetailVO);
 	}
 	
 	public void deleteOrderDetail(Integer ordNo, Integer proNo) {
@@ -54,5 +57,9 @@ private OrderDetailDAO_interface dao;
 	
 	public List<OrderDetailVO> getAll(){
 		return dao.getAll();
+	}
+	
+	public List<OrderDetailVO> getAll(Map<String, String[]> map){
+		return dao.getAll(map);
 	}
 }

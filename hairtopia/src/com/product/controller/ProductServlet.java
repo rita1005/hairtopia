@@ -6,6 +6,8 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.product.model.ProductDAO;
@@ -31,6 +34,11 @@ public class ProductServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		HttpSession session = req.getSession();
+		@SuppressWarnings("unchecked")
+		List<ProductVO> buylist = (Vector<ProductVO>) session.getAttribute("shoppingcart");
+
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -354,7 +362,6 @@ public class ProductServlet extends HttpServlet {
 		}
 		
 		if ("listProducts_ByCompositeQuery".equals(action)) { // 來自select_page.jsp的請求
-
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -366,24 +373,23 @@ public class ProductServlet extends HttpServlet {
 				//採用Map<String,String[]> getParameterMap()的方法 
 				//注意:an immutable java.util.Map 
 				Map<String, String[]> map = req.getParameterMap();
-				
+
 				/***************************2.開始複合查詢***************************************/
 				ProductService productSvc = new ProductService();
 				List<ProductVO> list  = productSvc.getAll(map);
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("listProducts_ByCompositeQuery", list); // 資料庫取出的list物件,存入request
-				RequestDispatcher successView = req.getRequestDispatcher("/product/listProducts_ByCompositeQuery.jsp"); // 成功轉交listProducts_ByCompositeQuery.jsp
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listProducts_ByCompositeQuery.jsp"); // 成功轉交listProducts_ByCompositeQuery.jsp
 				successView.forward(req, res);
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/select_page.jsp");
+						.getRequestDispatcher("/back-end/product/select_page.jsp");
 				failureView.forward(req, res);
 			}
-		}
+		}		
 	}
-
 }

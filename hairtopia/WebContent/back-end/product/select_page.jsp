@@ -107,6 +107,7 @@
 		<li><b>搜尋:</b><input type="text" name="search"></li>
 		<li><b>選擇商品編號:</b>
 	       <select size="1" name="braNO" >
+	         <option>
 	         <c:forEach var="productVO" items="${dao.all}" > 
 	          <option value="${productVO.proNo}">${productVO.proNo}
 	         </c:forEach>   
@@ -114,6 +115,7 @@
         </li>
      	<li><b><font color=orange>選擇商品類別:</font></b>
 	       <select size="1" name="ptypeNo" >
+	         <option>
 	         <c:forEach var="ptypeVO" items="${ptypeSvc.all}" > 
 	          <option value="${ptypeVO.ptypeNo}">${ptypeVO.ptypeName}
 	         </c:forEach>   
@@ -121,6 +123,7 @@
         </li>
         <li><b><font color=orange>選擇品牌名稱:</font></b>
 	       <select size="1" name="braNo">
+	       	<option>
 	         <c:forEach var="brandVO" items="${brandSvc.all}" > 
 	          <option value="${brandVO.braNo}">${brandVO.braName}
 	         </c:forEach>   
@@ -128,6 +131,7 @@
         </li>
         <li><b>選擇商品名稱:</b>
 	       <select size="1" name="proNo">
+	       	<option>
 	         <c:forEach var="productVO" items="${dao.all}" > 
 	          <option value="${productVO.proNo}">${productVO.proName}
 	         </c:forEach>   

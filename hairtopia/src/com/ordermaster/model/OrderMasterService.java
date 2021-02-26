@@ -1,6 +1,10 @@
 package com.ordermaster.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import com.orderdetail.model.OrderDetailVO;
 
 
 public class OrderMasterService {
@@ -11,35 +15,35 @@ private OrderMasterDAO_interface dao;
 	}
 	
 	public OrderMasterVO addOrderMaster(Integer memNo, Integer ordStatus, Integer ordAmt) {
-		OrderMasterVO ordmVO = new OrderMasterVO();
+		OrderMasterVO ordermasterVO = new OrderMasterVO();
 		
-		ordmVO.setMemNo(memNo);
-		ordmVO.setOrdStatus(ordStatus);
-		ordmVO.setOrdAmt(ordAmt);
-		dao.insert(ordmVO);
+		ordermasterVO.setMemNo(memNo);
+		ordermasterVO.setOrdStatus(ordStatus);
+		ordermasterVO.setOrdAmt(ordAmt);
+		dao.insert(ordermasterVO);
 		
-		return ordmVO;
+		return ordermasterVO;
 	}
 	
 	//預留給Struts2用
-	public void addOrderMaster(OrderMasterVO ordmVO) {
-		dao.insert(ordmVO);
+	public void addOrderMaster(OrderMasterVO ordermasterVO) {
+		dao.insert(ordermasterVO);
 	}
 	
 	public OrderMasterVO updateOrderMaster(Integer ordNo, Integer memNo, Integer ordStatus, Integer ordAmt) {
-		OrderMasterVO ordmVO = new OrderMasterVO();
+		OrderMasterVO ordermasterVO = new OrderMasterVO();
 		
-		ordmVO.setMemNo(memNo);
-		ordmVO.setOrdStatus(ordStatus);
-		ordmVO.setOrdAmt(ordAmt);
-		dao.update(ordmVO);
+		ordermasterVO.setMemNo(memNo);
+		ordermasterVO.setOrdStatus(ordStatus);
+		ordermasterVO.setOrdAmt(ordAmt);
+		dao.update(ordermasterVO);
 		
 		return dao.findByPrimaryKey(ordNo);
 	}
 	
 	//預留給Struts2用
-	public void updateOrderMaster(OrderMasterVO ordmVO) {
-		dao.update(ordmVO);
+	public void updateOrderMaster(OrderMasterVO ordermasterVO) {
+		dao.update(ordermasterVO);
 	}
 	
 	public void deleteOrderMaster(Integer ordNo) {
@@ -53,4 +57,19 @@ private OrderMasterDAO_interface dao;
 	public List<OrderMasterVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public List<OrderMasterVO> getAll(Map<String, String[]> map){
+		return dao.getAll(map);
+	}
+	
+	public OrderMasterVO addOrderMasterwithOrderDetails(Integer memNo, Integer ordAmt, Vector<OrderDetailVO> vector) {
+		OrderMasterVO ordermasterVO = new OrderMasterVO();
+		
+		ordermasterVO.setMemNo(memNo);
+		ordermasterVO.setOrdAmt(ordAmt);
+		ordermasterVO=dao.insertWithOrderDetails(ordermasterVO,vector);
+		
+		return ordermasterVO;
+	}
+
 }

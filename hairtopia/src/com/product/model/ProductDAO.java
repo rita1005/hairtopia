@@ -271,32 +271,43 @@ public class ProductDAO implements ProductDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+//		System.out.println(map);
+//		Set<String> keys = map.keySet();
+//		int count = 0;
+//		for(String key : keys) {
+//			String value = map.get(key)[0];
+//			System.out.println(map.get(key)[0]);
+//			System.out.println(key+"="+value);
+//			count++;
+//		}	
 		
 		try {
 			con = ds.getConnection();			
-			String SQL = "select proNo,pr.ptypeNo,b.braNo,proName,proStatus,proPrice,proMpic,proPic,proDesc from product pr " 										
-				    	+"join ptype pt on product.ptypeNo = pt.ptypeNo "
+			String SQL = "select proNo,pr.ptypeNo,pr.braNo,proName,proStatus,proPrice,proMpic,proPic,proDesc from product pr " 										
+				    	+"join ptype pt on pr.ptypeNo = pt.ptypeNo "
 				    	+"join brand b on pr.braNo = b.braNo ";
 			Set<String> keys = map.keySet();
 			int count = 0;
 			for(String key : keys) {
-				String value = map.get(keys)[count];
-				if (value != null) {
+				String value = map.get(key)[0];
+				System.out.println(value);
+				if (!"".equals(value) && !"action".equals(key)) {
 					if(count==0) {
 						SQL += "where ";
+						count++;
 					}else {
 						SQL +="and ";
 					}
 					if(key.equals("search")){
 						SQL +=  "concat(proNo,ptypeName,braName,proName,proPrice,proDesc) like "+ "'%"+value+"%' ";								
 					}else {
-						SQL += (key + "=" + value + " "); 
-					}
-					
+						SQL += ("pr." + key + "=" + value + " ");
+					}					
 				}
+				
 			}			
-			SQL += " order by proNo;";
-			
+			SQL += "order by proNo;";
+			System.out.println(SQL);
 			pstmt = con.prepareStatement(SQL);			
 			rs = pstmt.executeQuery();
 			
