@@ -19,7 +19,7 @@ public class RuleDAO implements RuleDAO_interface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/hairtopia");
+			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Hairtopia");
 		} catch (NamingException e) {			
 			e.printStackTrace();
 		}
