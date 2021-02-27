@@ -50,6 +50,6 @@
 
 <a href="${pageContext.request.contextPath}/front-end/product/Cart.jsp">購物車</a>
 <p> 
-<%--    <jsp:include page="${pageContext.request.contextPath}/front-end/product/Cart.jsp" flush="true" />  --%>
+   <jsp:include page="/front-end/product/Cart.jsp" flush="true" />
 </body>
 </html>
