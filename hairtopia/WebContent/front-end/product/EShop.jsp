@@ -29,15 +29,15 @@
 <jsp:useBean id="brandSvc" scope="page" class="com.brand.model.BrandService"/>
 
 <c:forEach var="productVO" items="${productSvc.all}"> 
-<form name="shoppingForm" action="${pageContext.request.contextPath}/product/product.do" method="POST">
+<form name="shoppingForm" action="<%=request.getContextPath()%>/product/product.do" method="POST">
   <table>
   <tr> 
     <td>${ptypeSvc.getOnePtype(productVO.ptypeNo).ptypeName}</td>
     <td>${brandSvc.getOneBrand(productVO.braNo).braName}</td>
     <td>${productVO.proName}</td>
     <td>${productVO.proPrice}</td>
-    <td><img src="${pageContext.request.contextPath}/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
-    <td><img src="${pageContext.request.contextPath}/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+    <td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+    <td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
     <td>${productVO.proDesc}</td>
     <td><div align="center">數量：<input type="text" name="quantity" size="3" value=1></div></td>
   	<td width="120"><div align="center"><input type="submit" class="button" value="放入購物車"> </div></td>
@@ -48,7 +48,7 @@
 </form>
  </c:forEach> 
 
-<a href="${pageContext.request.contextPath}/front-end/product/Cart.jsp">購物車</a>
+<a href="<%=request.getContextPath()%>/front-end/product/Cart.jsp">購物車</a>
 <p> 
    <jsp:include page="/front-end/product/Cart.jsp" flush="true" />
 </body>

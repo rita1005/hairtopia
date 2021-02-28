@@ -41,12 +41,12 @@
 		<td width="100">${brandSvc.getOneBrand(productVO.braNo).braName}</td>
 		<td width="100">${productVO.proName}</td>
 		<td width="100">${productVO.proPrice}</td>
-		<td><img src="${request.getContextPath}/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
-		<td><img src="${request.getContextPath}/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+		<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+		<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
 		<td width="120">${productVO.proDesc}</td>
 		<td width="100">${productVO.quantity}</td>
         <td width="120">
-          <form name="deleteForm" action="${pageContext.request.contextPath}/product/product.do" method="POST">
+          <form name="deleteForm" action="<%=request.getContextPath()%>/product/product.do" method="POST">
               <input type="hidden" name="action"  value="DELETE">
               <input type="hidden" name="del" value="${i.index}">
               <input type="submit" value="刪 除" class="button">
@@ -56,7 +56,7 @@
 <%--  	<%} %> --%>
 </table>
 <p>
-          <form name="checkoutForm" action="${pageContext.request.contextPath}/product/product.do" method="POST">
+          <form name="checkoutForm" action="<%=request.getContextPath()%>/product/product.do" method="POST">
               <input type="hidden" name="action"  value="CHECKOUT"> 
               <input type="submit" value="付款結帳" class="button">
           </form>

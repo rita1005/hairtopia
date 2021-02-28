@@ -25,11 +25,12 @@
 		<th width="120"><h3>小計</h3></th>
 	</tr></table>
 	
-<form action="${pageContext.request.contextPath}/ordermaster/ordermaster.do" method="POST">		
+<form action="<%=request.getContextPath()%>/ordermaster/ordermaster.do" method="POST">		
 
 <table style="margin: auto;">
-
- <%Vector<ProductVO> buylist = (Vector<ProductVO>) session.getAttribute("shoppingcart");
+	
+ <%  @SuppressWarnings("unchecked") 
+   Vector<ProductVO> buylist = (Vector<ProductVO>) session.getAttribute("shoppingcart");
    MemVO memVO = (MemVO)session.getAttribute("memVO");
    String ordAmt =  (String) request.getAttribute("ordAmt");%>
 
@@ -39,11 +40,11 @@
 		<td width="100">${brandSvc.getOneBrand(productVO.braNo).braName}</td>
 		<td width="100">${productVO.proName}</td>
 		<td width="100">${productVO.proPrice}</td>
-		<td><img src="${pageContext.request.contextPath}/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
-		<td><img src="${pageContext.request.contextPath}/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+		<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proMpic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
+		<td><img src="<%=request.getContextPath()%>/PicFinder?pic=1&table=product&column=proPic&idname=proNo&id=${productVO.proNo}" alt='沒有圖片'></td>
 		<td width="120">${productVO.proDesc}</td>
 		<td width="100">${productVO.quantity}</td>
-		<td width="100">${productVO.proPrice*productVO.quantity}</td>
+		<td width="100">${(productVO.proPrice)*(productVO.quantity)}</td>
         <td width="120"></td>
 	</tr>
  </c:forEach> 
@@ -62,7 +63,7 @@
 <input type="submit" value="送出">
 </form>       
        
-       <p><a href="${pageContext.request.contextPath}/front-end/product/EShop.jsp"><font size="+1"> 是 否 繼 續 購 物</font></a>
+       <p><a href="<%=request.getContextPath()%>/front-end/product/EShop.jsp"><font size="+1"> 是 否 繼 續 購 物</font></a>
 
 </body>
 </html>

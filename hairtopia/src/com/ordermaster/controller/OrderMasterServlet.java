@@ -1,14 +1,11 @@
 package com.ordermaster.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,10 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
 import com.orderdetail.model.OrderDetailVO;
-import com.ordermaster.model.OrderMasterDAO;
 import com.ordermaster.model.OrderMasterService;
 import com.ordermaster.model.OrderMasterVO;
 import com.product.model.ProductVO;
@@ -29,6 +23,7 @@ import com.product.model.ProductVO;
 @WebServlet("/ordermaster/ordermaster.do")
 @MultipartConfig
 public class OrderMasterServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
@@ -78,6 +73,7 @@ System.out.println(map);
 			Integer ordAmt = new Integer(req.getParameter("ordAmt"));
 			
 			HttpSession session = req.getSession();
+			@SuppressWarnings("unchecked")
 			Vector<ProductVO> buylist = (Vector<ProductVO>)session.getAttribute("buylist");
 			OrderMasterVO ordermasterVO = new OrderMasterVO();
 			ordermasterVO.setMemNo(memNo);
@@ -91,6 +87,7 @@ System.out.println(map);
 				orderdetailVO.setOrdDetPrice(productVO.getProPrice()*productVO.getQuantity());
 				list.add(orderdetailVO);
 			}
+			session.removeAttribute("shoppingcart");
 			/***************************2.開始新增資料***************************************/
 			OrderMasterService ordermasterSvc = new OrderMasterService();
 			ordermasterVO = ordermasterSvc.addOrderMasterwithOrderDetails(memNo,ordAmt,list);

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import com.brand.model.BrandDAO;
 import com.brand.model.BrandService;
 import com.brand.model.BrandVO;
 import com.product.model.ProductVO;
@@ -24,6 +21,7 @@ import com.product.model.ProductVO;
 @WebServlet("/brand/brand.do")
 @MultipartConfig
 public class BrandServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
